@@ -6,30 +6,33 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import kz.sellora.configuration.security.JwtProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.UUID;
 
+@Slf4j
 @Service
 public class JwtService {
 
-    private final JwtProperties properties;
+    private final JwtProperties jwtProperties;
     private final SecretKey key;
 
-    public JwtService(JwtProperties properties) {
-        this.properties = properties;
-        this.key = Keys.hmacShaKeyFor(properties.getSecret().getBytes());
+    public JwtService(JwtProperties jwtProperties) {
+        this.jwtProperties = jwtProperties;
+        this.key = Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes());
     }
 
-    public String generate(String username) {
+    public String generateAccessToken(String username) {
         Date now = new Date();
-        Date expiry = new Date(now.getTime() + properties.getExpiration());
-
+        Date expiry = new Date(now.getTime() + jwtProperties.getAccessTokenExpiration());
         return Jwts.builder()
             .subject(username)
             .issuedAt(now)
             .expiration(expiry)
+            .claim("type", "access")
             .signWith(key)
             .compact();
     }
@@ -38,12 +41,37 @@ public class JwtService {
         return parse(token).getPayload().getSubject();
     }
 
+    public String generateRefreshToken(String username, String deviceId) {
+
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + jwtProperties.getRefreshTokenExpiration());
+
+        return Jwts.builder()
+            .subject(username)
+            .issuedAt(now)
+            .expiration(expiry)
+            .claim("type", "refresh")
+            .claim("deviceId", deviceId)
+            .id(UUID.randomUUID().toString())
+            .signWith(key)
+            .compact();
+    }
+
     public boolean isValidToken(String token) {
         try {
             parse(token);
             return true;
         } catch (JwtException e) {
             return false;
+        }
+    }
+
+    public boolean isTokenRefresh(String token) {
+        try {
+            Claims claims = parse(token).getPayload();
+            return !"refresh".equals(claims.get("type"));
+        } catch (JwtException e) {
+            return true;
         }
     }
 

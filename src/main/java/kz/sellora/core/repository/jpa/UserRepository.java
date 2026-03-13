@@ -1,4 +1,4 @@
-package kz.sellora.core.repository;
+package kz.sellora.core.repository.jpa;
 
 import kz.sellora.core.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

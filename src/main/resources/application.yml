@@ -6,6 +6,10 @@ spring:
     username: sellora
     password: sellora
     driver-class-name: org.postgresql.Driver
+  data:
+    redis:
+      host: localhost
+      port: 6379
   jpa:
     hibernate:
       ddl-auto: update
@@ -16,17 +20,19 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  security:
+    user:
+      name: disabled
+      password: disabled
+    jwt:
+      secret: NYyi1S20GJufEk8aKx3eicgpa789tq9N
+      access-token-expiration: 1800000
+      refresh-token-expiration: 604800000
 
 server:
   port: 8080
   servlet:
     context-path: /sellora/api
-
-security:
-  jwt:
-    secret: NYyi1S20GJufEk8aKx3eicgpa789tq9N
-    expiration: 3600000
-
 
 logging:
   level:
