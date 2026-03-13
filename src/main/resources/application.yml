@@ -1,3 +1,35 @@
 spring:
   application:
     name: sellora
+  datasource:
+    url: jdbc:postgresql://localhost:5432/sellora
+    username: sellora
+    password: sellora
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8080
+  servlet:
+    context-path: /sellora/api
+
+security:
+  jwt:
+    secret: NYyi1S20GJufEk8aKx3eicgpa789tq9N
+    expiration: 3600000
+
+
+logging:
+  level:
+    root: INFO
+    kz.sellora: DEBUG
+    org.hibernate.orm.connections.pooling: error
