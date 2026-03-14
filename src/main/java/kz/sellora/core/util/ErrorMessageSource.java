@@ -7,13 +7,13 @@ public enum ErrorMessageSource {
     INVALID_USERNAME_OR_PASSWORD("Invalid username or password.")
     ;
 
-    private String text;
+    private final String text;
 
     ErrorMessageSource(String text) {
         this.text = text;
     }
 
     public String getText(String... params) {
-        return String.format(this.text, params);
+        return String.format(this.text, (Object) params);
     }
 }

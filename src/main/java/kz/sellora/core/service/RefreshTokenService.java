@@ -43,7 +43,7 @@ public class RefreshTokenService {
     }
 
     public String rotateRefreshToken(String refreshToken, String deviceId) {
-        if (!jwtService.isValidToken(refreshToken) || jwtService.isTokenRefresh(refreshToken)) {
+        if (jwtService.isInvalidToken(refreshToken) || jwtService.isTokenRefresh(refreshToken)) {
             log.warn("Invalid refresh token provided");
             return null;
         }
@@ -64,7 +64,7 @@ public class RefreshTokenService {
     }
 
     public boolean isValidRefreshToken(String refreshToken) {
-        if (!jwtService.isValidToken(refreshToken) || jwtService.isTokenRefresh(refreshToken)) {
+        if (jwtService.isInvalidToken(refreshToken) || jwtService.isTokenRefresh(refreshToken)) {
             return false;
         }
         return redisRefreshTokenRepository.existsById(refreshToken);

@@ -57,7 +57,7 @@ public class JwtService {
             .compact();
     }
 
-    public boolean isValidToken(String token) {
+    public boolean isInvalidToken(String token) {
         try {
             parse(token);
             return true;
