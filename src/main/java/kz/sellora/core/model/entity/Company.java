@@ -24,9 +24,6 @@ public class Company extends Base {
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    @Column(name = "description")
-    private String description;
-
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private CompanyStatus status;

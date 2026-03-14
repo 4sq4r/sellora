@@ -1,4 +1,4 @@
-package kz.sellora.core.service;
+package kz.sellora.core.service.security;
 
 import kz.sellora.configuration.security.JwtProperties;
 import kz.sellora.core.model.entity.redis.RefreshToken;

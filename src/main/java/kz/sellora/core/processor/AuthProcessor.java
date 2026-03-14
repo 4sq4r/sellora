@@ -2,9 +2,9 @@ package kz.sellora.core.processor;
 
 import kz.sellora.configuration.security.JwtProperties;
 import kz.sellora.core.model.entity.User;
-import kz.sellora.core.service.AccessTokenService;
-import kz.sellora.core.service.JwtService;
-import kz.sellora.core.service.RefreshTokenService;
+import kz.sellora.core.service.security.AccessTokenService;
+import kz.sellora.core.service.security.JwtService;
+import kz.sellora.core.service.security.RefreshTokenService;
 import kz.sellora.core.service.UserService;
 import kz.sellora.core.util.ErrorMessageSource;
 import kz.sellora.exception.CustomException;

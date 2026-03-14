@@ -4,7 +4,8 @@ package kz.sellora.core.util;
 public enum ErrorMessageSource {
 
     USERNAME_ALREADY_EXISTS("Username already exists: %s"),
-    INVALID_USERNAME_OR_PASSWORD("Invalid username or password.")
+    INVALID_USERNAME_OR_PASSWORD("Invalid username or password."),
+    TENANT_ALREADY_EXISTS("Tenant already exists: %s")
     ;
 
     private final String text;

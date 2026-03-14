@@ -4,8 +4,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kz.sellora.core.service.JwtService;
-import kz.sellora.core.service.AccessTokenService;
+import kz.sellora.core.service.security.AccessTokenService;
+import kz.sellora.core.service.security.CustomUserDetailsService;
+import kz.sellora.core.service.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,6 +28,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final AccessTokenService accessTokenService;
+    private final CustomUserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(
@@ -56,9 +58,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        String username = jwtService.extractUsername(token);
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-            username,
+            userDetailsService.loadUserByUsername(jwtService.extractUsername(token)),
             null,
             List.of()
         );
