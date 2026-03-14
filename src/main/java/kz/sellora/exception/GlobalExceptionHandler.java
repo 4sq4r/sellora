@@ -20,16 +20,6 @@ import static java.util.stream.Collectors.toMap;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDTO> handleAllExceptions(Exception e) {
-        ErrorResponseDTO errorResponseDTO = buildErrorResponse(
-            500,
-            "Internal Server Error: " + e.getMessage(),
-            null
-        );
-        return new ResponseEntity<>(errorResponseDTO, HttpStatusCode.valueOf(500));
-    }
-
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
         MethodArgumentNotValidException e,

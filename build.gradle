@@ -32,6 +32,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.security:spring-security-test'
+  testImplementation 'org.springframework.boot:spring-boot-testcontainers'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
@@ -51,7 +52,6 @@ dependencies {
   def testContainersVersion = '1.21.3'
   testImplementation 'org.testcontainers:junit-jupiter:' + testContainersVersion
   testImplementation 'org.testcontainers:postgresql:' + testContainersVersion
-  testImplementation 'org.testcontainers:minio:' + testContainersVersion
 }
 
 tasks.named('test') {

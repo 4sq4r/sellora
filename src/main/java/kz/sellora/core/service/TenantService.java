@@ -27,7 +27,19 @@ public class TenantService {
 
     private void checkUniqueness(String name) {
         if (repository.existsByName(name)) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, ErrorMessageSource.TENANT_ALREADY_EXISTS.getText(name));
+            throw CustomException.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .message(ErrorMessageSource.TENANT_ALREADY_EXISTS.getText(name))
+                .build();
         }
+    }
+
+    public Tenant getOne(String id) {
+        return repository.findById(id).orElseThrow(
+            () -> CustomException.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .message(ErrorMessageSource.TENANT_NOT_FOUND.getText(id))
+                .build()
+        );
     }
 }

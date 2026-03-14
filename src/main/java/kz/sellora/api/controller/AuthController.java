@@ -17,12 +17,6 @@ public class AuthController {
 
     private final AuthFacade facade;
 
-    @PostMapping("/sign-up")
-    public AuthDTO signUp(@RequestBody AuthDTO authDTO) {
-        log.info("Incoming request to sign up: {}", authDTO.getUsername());
-        return facade.signUp(authDTO);
-    }
-
     @PostMapping("/sign-in")
     public AuthDTO signIn(@RequestBody AuthDTO authDTO) {
         log.info("Incoming request to sign in: {}", authDTO.getUsername());

@@ -11,15 +11,6 @@ public class AuthFacade {
 
     private final AuthProcessor processor;
 
-    public AuthDTO signUp(AuthDTO authDTO) {
-        AuthProcessor.AuthTokens authTokens = processor.signUp(authDTO.getUsername(), authDTO.getPassword(), authDTO.getDeviceId());
-        AuthDTO response = new AuthDTO();
-        response.setToken(authTokens.accessToken());
-        response.setRefreshToken(authTokens.refreshToken());
-
-        return response;
-    }
-
     public AuthDTO signIn(AuthDTO authDTO) {
         AuthProcessor.AuthTokens authTokens = processor.signIn(authDTO.getUsername(), authDTO.getPassword(), authDTO.getDeviceId());
         AuthDTO response = new AuthDTO();

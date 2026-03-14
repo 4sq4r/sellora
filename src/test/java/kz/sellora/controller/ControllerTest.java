@@ -3,51 +3,45 @@ package kz.sellora.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import kz.sellora.core.model.entity.Base;
+import kz.sellora.configuration.TestContainerConfiguration;
 import kz.sellora.util.Fields;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.testcontainers.containers.wait.strategy.Wait.forLogMessage;
 
-@Testcontainers
+@Rollback
+@Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
+@Import(TestContainerConfiguration.class)
 public abstract class ControllerTest {
 
     protected static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-    private static final String POSTGRES_IMAGE_NAME = "postgres:17";
-    private static final String TEST = "test";
 
     @Autowired
     protected MockMvc mockMvc;
 
     @Test
     void contextLoads() {
-        assertNotNull(container.getJdbcUrl());
+        assertNotNull(mockMvc);
     }
 
-    protected <T extends Base> MvcResult sendPostRequest(String url, T body, ResultMatcher expectedStatus) {
+    protected <T> MvcResult sendPostRequest(String url, T body, ResultMatcher expectedStatus) {
         try {
             return mockMvc.perform(MockMvcRequestBuilders.post(url)
                     .contentType(APPLICATION_JSON)
@@ -106,23 +100,6 @@ public abstract class ControllerTest {
         } catch (Exception e) {
             throw new RuntimeException("Failed to assert system values from MvcResult", e);
         }
-    }
-
-    @Container
-    @SuppressWarnings("resource")
-    static PostgreSQLContainer<?> container = new PostgreSQLContainer<>(POSTGRES_IMAGE_NAME)
-        .withDatabaseName(TEST)
-        .withUsername(TEST)
-        .withPassword(TEST)
-        .waitingFor(forLogMessage(".*database system is ready to accept connections.*\\n", 1)
-            .withStartupTimeout(Duration.ofSeconds(60))
-        );
-
-    @DynamicPropertySource
-    static void registerProps(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", container::getJdbcUrl);
-        registry.add("spring.datasource.username", container::getUsername);
-        registry.add("spring.datasource.password", container::getPassword);
     }
 
 }
