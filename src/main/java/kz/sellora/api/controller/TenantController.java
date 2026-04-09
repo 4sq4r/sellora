@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/tenants")
+@RequestMapping("/private/tenants")
 @RequiredArgsConstructor
 public class TenantController {
 

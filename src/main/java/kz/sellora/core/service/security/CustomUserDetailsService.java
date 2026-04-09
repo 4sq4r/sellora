@@ -1,5 +1,6 @@
 package kz.sellora.core.service.security;
 
+import kz.sellora.core.model.entity.User;
 import kz.sellora.core.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new UserPrincipal(service.findByUsername(username));
+        User user = service.findByUsername(username);
+        String companyName = user.getCompany() != null ? user.getCompany().getName() : null;
+        return new UserPrincipal(user, companyName);
     }
 }

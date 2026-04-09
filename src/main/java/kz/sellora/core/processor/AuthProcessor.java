@@ -3,7 +3,7 @@ package kz.sellora.core.processor;
 import kz.sellora.configuration.security.JwtProperties;
 import kz.sellora.core.model.entity.User;
 import kz.sellora.core.service.security.AccessTokenService;
-import kz.sellora.core.service.security.JwtService;
+//import kz.sellora.core.service.security.JwtService;
 import kz.sellora.core.service.security.RefreshTokenService;
 import kz.sellora.core.service.UserService;
 import kz.sellora.core.util.ErrorMessageSource;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 public class AuthProcessor {
 
     private final UserService userService;
-    private final JwtService jwtService;
+//    private final JwtService jwtService;
     private final AccessTokenService accessTokenService;
     private final RefreshTokenService refreshTokenService;
     private final JwtProperties jwtProperties;
@@ -35,7 +35,10 @@ public class AuthProcessor {
                 .build();
         }
 
-        AuthTokens authTokens = generateTokens(username, deviceId);
+        String companyId = user.getCompany() != null ? user.getCompany().getId().toString() : null;
+        String companyName = user.getCompany() != null ? user.getCompany().getName() : null;
+
+        AuthTokens authTokens = generateTokens(username, deviceId, companyId, companyName);
         accessTokenService.saveToken(username, authTokens.accessToken(), jwtProperties.getAccessTokenExpiration());
 
         return authTokens;
@@ -67,17 +70,23 @@ public class AuthProcessor {
                 .build();
         }
 
-        String accessToken = jwtService.generateAccessToken(username);
-        accessTokenService.saveToken(username, accessToken, jwtProperties.getAccessTokenExpiration());
+//        String accessToken = jwtService.generateAccessToken(username);
+//        accessTokenService.saveToken(username, accessToken, jwtProperties.getAccessTokenExpiration());
 
-        return new AuthTokens(accessToken, newRefreshToken);
+//        return new AuthTokens(accessToken, newRefreshToken);
+        return null;
     }
 
     public AuthTokens generateTokens(String username, String deviceId) {
-        String accessToken = jwtService.generateAccessToken(username);
+        return generateTokens(username, deviceId, null, null);
+    }
+
+    public AuthTokens generateTokens(String username, String deviceId, String companyId, String companyName) {
+//        String accessToken = jwtService.generateAccessToken(username, companyId, companyName);
         String refreshToken = refreshTokenService.createRefreshToken(username, deviceId);
 
-        return new AuthTokens(accessToken, refreshToken);
+//        return new AuthTokens(accessToken, refreshToken);
+        return null;
     }
     public record AuthTokens(String accessToken, String refreshToken) {
     }

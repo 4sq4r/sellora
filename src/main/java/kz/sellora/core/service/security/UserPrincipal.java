@@ -1,6 +1,7 @@
 package kz.sellora.core.service.security;
 
 import kz.sellora.core.model.entity.User;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,6 +13,9 @@ import java.util.Collection;
 public class UserPrincipal implements UserDetails {
 
     private final User user;
+
+    @Getter
+    private final String companyName;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -33,4 +37,5 @@ public class UserPrincipal implements UserDetails {
     public String getUsername() {
         return user.getUsername();
     }
+
 }

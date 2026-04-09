@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/private/users")
 @RequiredArgsConstructor
 public class UserController {
 

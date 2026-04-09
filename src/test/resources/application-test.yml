@@ -1,0 +1,5 @@
+security:
+  jwt:
+    secret: NYyi1S20GJufEk8aKx3eicgpa789tq9N
+    access-token-expiration: 1800000
+    refresh-token-expiration: 604800000

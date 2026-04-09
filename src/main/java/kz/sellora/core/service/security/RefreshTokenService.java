@@ -16,7 +16,7 @@ import java.util.UUID;
 public class RefreshTokenService {
 
     private final RedisRefreshTokenRepository redisRefreshTokenRepository;
-    private final JwtService jwtService;
+//    private final JwtService jwtService;
     private final JwtProperties jwtProperties;
 
     public String createRefreshToken(String username, String deviceId) {
@@ -24,12 +24,12 @@ public class RefreshTokenService {
             deviceId = UUID.randomUUID().toString();
         }
 
-        String token = jwtService.generateRefreshToken(username, deviceId);
+//        String token = jwtService.generateRefreshToken(username, deviceId);
 
         long expirationSeconds = jwtProperties.getRefreshTokenExpiration() / 1000;
 
         RefreshToken refreshToken = RefreshToken.builder()
-            .token(token)
+//            .token(token)
             .username(username)
             .deviceId(deviceId)
             .expirationSeconds(expirationSeconds)
@@ -39,14 +39,15 @@ public class RefreshTokenService {
         redisRefreshTokenRepository.save(refreshToken);
         log.debug("Refresh token created for user: {}, deviceId: {}", username, deviceId);
 
-        return token;
+//        return token;
+        return null;
     }
 
     public String rotateRefreshToken(String refreshToken, String deviceId) {
-        if (jwtService.isInvalidToken(refreshToken) || jwtService.isTokenRefresh(refreshToken)) {
-            log.warn("Invalid refresh token provided");
-            return null;
-        }
+//        if (!jwtService.isValidToken(refreshToken) || jwtService.isTokenRefresh(refreshToken)) {
+//            log.warn("Invalid refresh token provided");
+//            return null;
+//        }
 
         RefreshToken storedToken = redisRefreshTokenRepository.findById(refreshToken).orElse(null);
         if (storedToken == null) {
@@ -64,9 +65,9 @@ public class RefreshTokenService {
     }
 
     public boolean isValidRefreshToken(String refreshToken) {
-        if (jwtService.isInvalidToken(refreshToken) || jwtService.isTokenRefresh(refreshToken)) {
-            return false;
-        }
+//        if (!jwtService.isValidToken(refreshToken) || jwtService.isTokenRefresh(refreshToken)) {
+//            return false;
+//        }
         return redisRefreshTokenRepository.existsById(refreshToken);
     }
 

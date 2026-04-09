@@ -3,6 +3,7 @@ package kz.sellora.configuration;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
+import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 @TestConfiguration
@@ -10,6 +11,8 @@ public class TestContainerConfiguration {
 
     private static final String TEST = "test";
     private static final String POSTGRES_IMAGE = "postgres:17";
+    private static final String REDIS_IMAGE = "redis:7";
+
     @Bean
     @ServiceConnection
     static PostgreSQLContainer<?> postgresSQLContainer() {
@@ -17,5 +20,12 @@ public class TestContainerConfiguration {
             .withDatabaseName(TEST)
             .withUsername(TEST)
             .withPassword(TEST);
+    }
+
+    @Bean
+    @ServiceConnection("redis")
+    static GenericContainer<?> redisContainer() {
+        return new GenericContainer<>(REDIS_IMAGE)
+            .withExposedPorts(6379);
     }
 }

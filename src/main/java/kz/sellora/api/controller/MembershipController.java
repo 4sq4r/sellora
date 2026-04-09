@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/memberships")
+@RequestMapping("/private/memberships")
 @RequiredArgsConstructor
 public class MembershipController {
 
